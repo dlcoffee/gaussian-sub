@@ -1,9 +1,9 @@
 import numpy as np
-import copy
 import sys
 
 np.set_printoptions(linewidth=200, precision=6)
 
+# creates an n x n matrix where A_ij = 1 if i == j, and = i/(i+j)^2 otherwise
 def create_matrix(n):
     mat = np.empty([n,n], dtype=float)
     for i in range(0, n):
@@ -14,6 +14,7 @@ def create_matrix(n):
                 mat[i,j] = 1/(i + j)**2
     return mat
 
+# creates a n x 1 vector from 1 to n
 def create_vec(n):
     vec = np.empty([n,1], dtype=float)
     for i in range(0,n):
@@ -22,37 +23,15 @@ def create_vec(n):
     return vec
 
 
-'''
-test = create_matrix(n)
-print(test)
-
-v = create_vec(n)
-print(v)
-'''
-
-#d = np.array([[1,1,0,1],[2,1,-1,1],[-1,2,3,-1],[3,-1,-1,2]])
-#x = np.array([[2],[1],[4],[-3]])
-#n = 4
-
-#6a.
-#d = np.array([[0,1,-2],[1,-1,1],[1,0,-1]])
-#x = np.array([[4],[6],[2]])
-#n = 3
-
-#6b.
-d = np.array([[1,-1/2,1,0],[2,-1,-1,1],[1,1,1/2,0],[1,-1/2,1,1]])
-x = np.array([[4],[5],[2],[5]])
-n = 4
-
-
+# does gaussian elimination (RREF) and backwards substitution to solve the system
 def gaussian_sub(x, y, n):
     aug = np.concatenate((x, y), -1)
     found_p = False
     print('your augmented matrix: ')
     print(aug)
 
+    # elimination step
     for i in range(0, n):
-        # find p
         p_f = i
         while (p_f < n):
             if aug[p_f,i] != 0:
@@ -93,6 +72,47 @@ def gaussian_sub(x, y, n):
 
     return aug
 
-#augmented = gaussian_sub(test,v, n)
-augmented = gaussian_sub(d, x, n)
-print(augmented)
+
+
+
+
+choices = {'1':'6a', '2':'6b', '3':'6c', '4':'6d', '5':'add1', '6':'add2'}
+user_in = input("Select problem: ")
+if user_in in choices:
+    if user_in == '1':
+        #6a.
+        n = 3
+        d = np.array([[0,1,-2],[1,-1,1],[1,0,-1]])
+        x = np.array([[4],[6],[2]])
+    elif user_in == '2':
+        #6b.
+        n = 4
+        d = np.array([[1,-1/2,1,0],[2,-1,-1,1],[1,1,1/2,0],[1,-1/2,1,1]])
+        x = np.array([[4],[5],[2],[5]])
+    elif user_in == '5':
+        # additional problem
+        n = 10
+        d = create_matrix(n)
+        x = create_vec(n)
+    else:
+        # additional problem
+        n = 100
+        d = create_matrix(n)
+        x = create_vec(n)
+
+    augmented = gaussian_sub(d, x, n)
+    print(augmented)    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
